@@ -21,7 +21,6 @@ struct Package
 
 struct PackageUdp : public Package
 {
-
     template<typename Archive>
     void serialize(Archive &ar, const unsigned int version)
     {

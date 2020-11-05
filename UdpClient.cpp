@@ -39,5 +39,5 @@ void UdpClient::receive()
     boost::archive::text_iarchive archive(archive_stream);
     archive >> pac;
 
-    cout << "[" << pac.i << "]  [" << pac.str << "]" <<endl;
+    // cout << "[" << pac.i << "]  [" << pac.str << "]" <<endl;
 }
