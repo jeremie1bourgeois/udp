@@ -5,69 +5,47 @@
 ** UdpServer
 */
 
-#include "UdpServer.hpp"
-#include <vector>
+#ifndef UDPSERVERHPP
+#define UDPSERVERHPP
 
-using namespace server;
-using namespace std;
+#include "Package.hpp"
 
-void UdpServer::makePackage()
-{
-    _toSend.i = 10;
-    _toSend.str = new string("fck this");
-}
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <boost/array.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/asio.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/binary_object.hpp>
+#include <boost/serialization/serialization.hpp>
 
-std::string make_daytime_string()
-{
-    using namespace std;
-    time_t now = time(0);
-    return ctime(&now);
-}
+using boost::asio::io_context;
+using boost::asio::ip::udp;
 
-UdpServer::UdpServer(int port): _socket(_io_context, udp::endpoint(udp::v4(), port))
-{
-    start_receive();
-    _io_context.run();
-}
+namespace server {
 
-UdpServer::~UdpServer()
-{
-}
+    class UdpServer {
+        public:
+            UdpServer(int port);
+            ~UdpServer();
 
-void UdpServer::start_receive()
-{
-    _socket.async_receive_from(
-        boost::asio::buffer(_recvBuffer), _remoteEndpoint,
-        boost::bind(&UdpServer::handle_receive, this,
-        boost::asio::placeholders::error,
-        boost::asio::placeholders::bytes_transferred));
-}
+        private:
+            void start_receive();
+            void handle_receive(const boost::system::error_code& error, std::size_t);
+            void handle_send(boost::shared_ptr<std::string>, const boost::system::error_code&, std::size_t);
+            const PackageUdp makePackage(int i, std::string str) const noexcept;
 
-void UdpServer::handle_receive(const boost::system::error_code& error, std::size_t)
-{
-    if (!error)
-    {
-//        boost::shared_ptr<std::string> message(new std::string(make_daytime_string()));
-//        boost::shared_ptr<Pack> send(new Pack(makePackage()));
-        makePackage();
-        ostringstream archive_stream;
-        boost::archive::text_oarchive arc(archive_stream);
-        arc << _toSend;
-        // char buffer[sizeof(Pack)];
-        // memcpy(buffer, &_toSend, sizeof(Pack));
-        
-//        boost::shared_ptr<std::string> message(new std::string(buffer));
 
-        _socket.async_send_to(boost::asio::buffer(archive_stream.str()), _remoteEndpoint,
-            boost::bind(&UdpServer::handle_send, this, archive_stream.str(),
-            boost::asio::placeholders::error,
-            boost::asio::placeholders::bytes_transferred));
-
-        start_receive();
-    }
-}
-
-void UdpServer::handle_send(boost::shared_ptr<std::string>, const boost::system::error_code&, std::size_t)
-{
+        protected:
+            io_context _io_context;
+            udp::socket _socket;
+            udp::endpoint _remoteEndpoint;
+            boost::array<char, 1> _recvBuffer;
+            PackageUdp _toSend;
+    };
 
 }
+
+#endif /* !UDPSERVERHPP */

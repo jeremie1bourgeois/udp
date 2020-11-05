@@ -11,18 +11,6 @@
 using namespace server;
 using namespace std;
 
-void UdpServer::makePackage()
-{
-    _toSend.i = 10;
-    _toSend.str = new string("fck this");
-}
-
-std::string make_daytime_string()
-{
-    using namespace std;
-    time_t now = time(0);
-    return ctime(&now);
-}
 
 UdpServer::UdpServer(int port): _socket(_io_context, udp::endpoint(udp::v4(), port))
 {
@@ -32,6 +20,21 @@ UdpServer::UdpServer(int port): _socket(_io_context, udp::endpoint(udp::v4(), po
 
 UdpServer::~UdpServer()
 {
+}
+
+const PackageUdp UdpServer::makePackage(int i, std::string str) const noexcept
+{
+    return PackageUdp {
+        i,
+        str
+    };
+}
+
+std::string make_daytime_string()
+{
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
 }
 
 void UdpServer::start_receive()
@@ -49,13 +52,13 @@ void UdpServer::handle_receive(const boost::system::error_code& error, std::size
     {
 //        boost::shared_ptr<std::string> message(new std::string(make_daytime_string()));
 //        boost::shared_ptr<Pack> send(new Pack(makePackage()));
-        makePackage();
+        PackageUdp test = makePackage(1, "salut");
         ostringstream archive_stream;
         boost::archive::text_oarchive arc(archive_stream);
-        arc << _toSend;
+        arc << test;
         // char buffer[sizeof(Pack)];
         // memcpy(buffer, &_toSend, sizeof(Pack));
-        
+
 //        boost::shared_ptr<std::string> message(new std::string(buffer));
 
         _socket.async_send_to(boost::asio::buffer(archive_stream.str()), _remoteEndpoint,
