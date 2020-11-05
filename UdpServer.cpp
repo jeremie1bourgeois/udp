@@ -24,10 +24,10 @@ UdpServer::~UdpServer()
 
 const PackageUdp UdpServer::makePackage(int i, std::string str) const noexcept
 {
-    return PackageUdp {
+    return (PackageUdp {
         i,
         str
-    };
+    });
 }
 
 std::string make_daytime_string()
