@@ -21,14 +21,6 @@ struct Package
 
 struct PackageUdp : public Package
 {
-    PackageUdp(){}
-
-    PackageUdp(int j, std::string str1)
-    {
-        i = j;
-        str = str1;
-    }
-
     template<typename Archive>
     void serialize(Archive &ar, const unsigned int version)
     {

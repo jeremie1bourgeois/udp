@@ -28,12 +28,16 @@ void UdpClient::send()
 
 void UdpClient::receive()
 {
-    char recv_buf[sizeof(Pack)];
+    std::string str;
+    str.resize(sizeof(PackageUdp));
     udp::endpoint senderEndpoint;
-    size_t len = _socket.receive_from(boost::asio::buffer(recv_buf, sizeof(Pack)), senderEndpoint);
+    size_t len = _socket.receive_from(boost::asio::buffer(str), senderEndpoint);
 
-    Pack pac;
-    memcpy(&pac, recv_buf, sizeof(Pack));
+    PackageUdp pac;
+    // memcpy(&pac, recv_buf, sizeof(PackageUdp));
+    std::istringstream archive_stream(str);
+    boost::archive::text_iarchive archive(archive_stream);
+    archive >> pac;
 
-    cout << pac.i << "]  [" << pac.str << "]" <<endl;
+    // cout << "[" << pac.i << "]  [" << pac.str << "]" <<endl;
 }

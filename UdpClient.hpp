@@ -13,6 +13,9 @@
 #include <iostream>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/binary_object.hpp>
+#include <boost/serialization/serialization.hpp>
 
 using namespace std;
 using namespace boost::asio;
