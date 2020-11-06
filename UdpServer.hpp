@@ -34,7 +34,7 @@ namespace server {
         private:
             void start_receive();
             void handle_receive(const boost::system::error_code& error, std::size_t);
-            void handle_send(boost::shared_ptr<std::string>, const boost::system::error_code&, std::size_t);
+            void handle_send();
             void makePackage(int i, std::string str);
 
 
