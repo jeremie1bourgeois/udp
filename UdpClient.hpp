@@ -22,6 +22,8 @@ using namespace boost::asio;
 
 using boost::asio::ip::udp;
 
+#define DEFAULT_SIZE 1024
+
 namespace client {
 
     class UdpClient {

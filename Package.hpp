@@ -10,8 +10,11 @@
 
 #include <string>
 
-#include <boost/serialization/binary_object.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/array.hpp>
 #include <boost/serialization/serialization.hpp>
+#include <boost/serialization/binary_object.hpp>
 
 struct Package
 {
