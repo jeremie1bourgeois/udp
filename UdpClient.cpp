@@ -40,3 +40,26 @@ void UdpClient::receive()
 
     cout << "[" << pac.i << "]  [" << pac.str << "]" <<endl;
 }
+
+// eujrferjfe
+// erf
+// erf
+// erf
+// erf
+// e
+// rf
+// erf
+
+
+// fffffffffffffff
+
+
+
+
+
+// erferfer
+// ferf
+// erf
+// exportf
+// erf
+// erf
